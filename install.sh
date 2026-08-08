@@ -12,20 +12,29 @@ sudo apt update
 
 # 3. Install all your data-dense applications & tools
 echo "📥 Installing application suite..."
+
 sudo apt install -y \
-    stow \
-    git \
-    wget \
-    unzip \
-    conky-all \
-    yakuake \
-    arc-theme \
-    qt5-style-kvantum \
-    qt6-style-kvantum \
-    fastfetch \
-    lsd \
-    bat \
-    btop
+    stow git wget unzip curl gpg \
+    conky-all yakuake arc-theme \
+    qt5-style-kvantum qt6-style-kvantum \
+    fastfetch lsd bat btop htop ncurses-term \
+    build-essential cmake gcc g++ make pkg-config \
+    google-android-platform-tools-installer \
+    gparted timeshift bleachbit keepassxc localsend rustdesk \
+    filezilla remmina qbittorrent solaar p7zip-full net-tools \
+    obs-studio kdenlive vlc mpv ffmpeg cheese ani-cli \
+    steam-installer chromium-browser kando
+
+# Flatpak Support
+sudo apt install -y flatpak
+sudo apt install -y gnome-software-plugin-flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+echo "Adding Coding Packages"
+sudo apt install -y openjdk-17-jdk
+sudo apt install -y openjdk-21-jdk
+sudo apt install -y python3 python3-pip python3-netifaces python3-qrcode
+
 
 # 4. Create custom aliases for naming conflicts (like batcat)
 if ! grep -q "alias bat=" ~/.bashrc; then
