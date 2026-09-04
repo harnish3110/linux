@@ -61,4 +61,4 @@ if ! command -v starship &> /dev/null; then
 fi
 
 echo "✅ System environment is fully prepared!"
-echo "👉 Run 'cd ~/dotfiles && stow conky && stow bash' to link configs."
+echo "👉 Run 'cd ~/dotfiles && stow conky && stow bash && stow myscripts' to link configs."

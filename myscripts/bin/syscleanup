@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Detect the active logged-in username for notifications
+USER_NAME=$(who | awk 'NR==1{print $1}')
+USER_ID=$(id -u "$USER_NAME")
+
+echo "=== Starting Advanced System Cleanup ==="
+
+# 1. Clean the APT package manager cache (Requires Root)
+echo "Cleaning APT package cache..."
+sudo apt-get clean
+
+# 2. Clean systemd journal logs older than 7 days (Requires Root)
+echo "Trimming system logs to 7 days..."
+sudo journalctl --vacuum-time=7d
+
+# 3. Clean user-specific cache files older than 7 days
+echo "Cleaning user cache files older than 7 days..."
+find "/home/$USER_NAME/.cache" -type f -mtime +7 -delete
+
+# 4. Empty the KDE Trash Bin
+echo "Emptying the system Trash..."
+rm -rf "/home/$USER_NAME/.local/share/Trash/files/"*
+rm -rf "/home/$USER_NAME/.local/share/Trash/info/"*
+
+# 5. Clean files older than 30 days in the Downloads folder
+echo "Purging downloads older than 30 days..."
+find "/home/$USER_NAME/Downloads" -type f -mtime +30 -delete
+
+echo "=== Cleanup Complete! ==="
+
+# 6. Send a KDE Desktop Notification to the active user
+if [ -n "$USER_NAME" ]; then
+    DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$USER_ID/bus" \
+    sudo -u "$USER_NAME" notify-send -i "system-cleaner" "System Housekeeping" "Automated system and junk cleanup completed successfully!"
+fi

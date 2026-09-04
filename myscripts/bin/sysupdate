@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Detect the active logged-in username for notifications
+
+USER_NAME=$(who | awk 'NR==1{print $1}')
+USER_ID=$(id -u "$USER_NAME")
+
+echo "=== Starting Apt Cleanup and Update ==="
+
+# 1. Clean the APT package manager cache (Requires Root)
+echo "=== Cleaning APT package cache..."
+sudo apt-get clean
+
+echo "=== Udating Packages"
+sudo apt-get update
+
+echo "=== Upgrading Apt package"
+sudo apt-get upgrade -y
+
+echo "=== Auto Remove APT package "
+sudo apt-get autoremove -y
+
+echo "=== Update Complete! ==="
